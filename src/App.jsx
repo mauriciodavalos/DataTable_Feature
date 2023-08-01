@@ -1,79 +1,90 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import './App.css';
-import { UsersList } from './UsersList';
+import { MotosList } from './MotosList';
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [showColors, setShowColors] = useState(false);
-  const [sortByCountry, setSortByCountry] = useState(false);
-  const [filterCountry, setFilterCountry] = useState(null);
+  const [motos, setMotos] = useState([]);
+  const [showColors, setShowColors] = useState(true);
+  const [sortByType, setSortByType] = useState(false);
+  const [filterType, setFilterType] = useState(null);
 
-  const originalUsers = useRef([]);
+  const originalMotos = useRef([]);
 
-  const toggleColors = () => {
-    setShowColors(!showColors);
-  };
-
-  const toggleSortByCountry = () => {
-    setSortByCountry(!sortByCountry);
-  };
-
-  const handleDelete = (email) => {
-    const filteredUsers = users.filter((user) => {
-      return user.email !== email;
-    });
-    setUsers(filteredUsers);
-  };
-
-  const handleReset = () => {
-    setUsers(originalUsers.current);
-  };
-
+  //Fetch Request function
   useEffect(() => {
-    fetch('https://randomuser.me/api/?results=100')
-      .then((res) => res.json())
+    fetch('https://api.api-ninjas.com/v1/motorcycles?make=BMW', {
+      method: 'GET',
+      headers: {
+        'X-Api-Key': '0I3WRBlnMomVDN+I/WHrUA==yaDQaKzOSciCPkpB',
+      },
+    })
       .then((res) => {
-        setUsers(res.results);
-        originalUsers.current = res.results;
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        setMotos(res);
+        originalMotos.current = res;
       })
       .catch((err) => console.error(err));
   }, []);
 
-  const filteredUsers =
-    filterCountry !== null && filterCountry.length > 0
-      ? users.filter((user) => {
-          return user.location.country
-            .toLowerCase()
-            .includes(filterCountry.toLowerCase());
+  const filteredMotos =
+    filterType !== null && filterType.length > 0
+      ? motos.filter((moto) => {
+          return moto.type.toLowerCase().includes(filterType.toLowerCase());
         })
-      : users;
+      : motos;
 
-  const sortedUser = sortByCountry
-    ? [...filteredUsers].sort((a, b) =>
-        a.location.country.localeCompare(b.location.country)
-      )
-    : filteredUsers;
+  const sortedMotos = sortByType
+    ? [...filteredMotos].sort((a, b) => a.type.localeCompare(b.type))
+    : filteredMotos;
+
+  //Reset Everything function
+  const handleReset = () => {
+    setMotos(originalMotos.current);
+  };
+
+  //Delete Everything function
+  const handleDelete = (model) => {
+    const filteredMotos = motos.filter((moto) => {
+      return moto.model !== model;
+    });
+    setMotos(filteredMotos);
+  };
+
+  //Decorating table function
+  const toggleColors = () => {
+    setShowColors(!showColors);
+  };
+
+  //Sorting table function
+  const toggleSortByType = () => {
+    setSortByType(!sortByType);
+  };
 
   return (
     <div>
-      <h1>Prueba Tecnica</h1>
+      <h1>BMW Top list</h1>
       <header>
         <button onClick={toggleColors}>Colorear Filas</button>
-        <button onClick={toggleSortByCountry}>
-          {sortByCountry ? 'No Ordenar por Pais' : 'Ordenar por Pais'}
+        <button onClick={toggleSortByType}>
+          {sortByType ? 'No Ordenar por Tipo' : 'Ordenar por Tipo'}
         </button>
         <button onClick={handleReset}>Restaurar Todo</button>
         <input
-          placeholder="Filtra por pais"
+          placeholder="Filtra por tipo"
           onChange={(e) => {
-            setFilterCountry(e.target.value);
+            setFilterType(e.target.value);
           }}
         />
       </header>
       <main>
-        <UsersList
-          users={sortedUser}
+        <MotosList
+          motos={sortedMotos}
           showColors={showColors}
           handleDelete={handleDelete}
         />
