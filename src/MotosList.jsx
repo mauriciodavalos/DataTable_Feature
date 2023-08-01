@@ -16,7 +16,7 @@ export function MotosList({ motos, showColors, handleDelete }) {
       </thead>
       <tbody>
         {motos.map((moto, index) => {
-          const backGroundColor = index % 2 === 0 ? '#456' : '#555';
+          const backGroundColor = index % 2 === 0 ? 'orange' : 'black';
           const color = showColors ? backGroundColor : 'transparent';
 
           return (
