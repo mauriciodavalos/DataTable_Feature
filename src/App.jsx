@@ -56,17 +56,17 @@ function App() {
       const speedA = parseFloat(a.top_speed);
       const speedB = parseFloat(b.top_speed);
 
-      return speedA - speedB;
+      return speedB - speedA;
     });
   }
 
-  //Reset Everything function without changing formatting
+  //Reset Everything function
   const handleReset = () => {
     setMotos(originalMotos.current);
     setSortBy('none');
   };
 
-  //Delete Everything function
+  //Delete one Row function
   const handleDelete = (model) => {
     const filteredMotos = motos.filter((moto) => {
       return moto.model !== model;
