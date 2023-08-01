@@ -10,7 +10,9 @@ export function MotosList({ motos, showColors, handleDelete, setSortBy }) {
           <th
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              setSortBy('model');
+              setSortBy((prevSortBy) =>
+                prevSortBy === 'model' ? 'none' : 'model'
+              );
             }}>
             Modelo
           </th>
@@ -18,14 +20,18 @@ export function MotosList({ motos, showColors, handleDelete, setSortBy }) {
           <th
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              setSortBy('type');
+              setSortBy((prevSortBy) =>
+                prevSortBy === 'type' ? 'none' : 'type'
+              );
             }}>
             Tipo
           </th>
           <th
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              setSortBy('topspeed');
+              setSortBy((prevSortBy) =>
+                prevSortBy === 'topspeed' ? 'none' : 'topspeed'
+              );
             }}>
             Velocidad Maxima
           </th>

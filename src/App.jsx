@@ -86,9 +86,11 @@ function App() {
         <button onClick={toggleColors}>Colorear Filas</button>
         <button
           onClick={() => {
-            setSortBy('type');
+            setSortBy((prevSortBy) =>
+              prevSortBy === 'type' ? 'none' : 'type'
+            );
           }}>
-          Ordenar por Tipo
+          {sortBy === 'type' ? 'No Ordenar por Tipo' : 'Ordenar por Tipo'}
         </button>
         <button onClick={handleReset}>Restaurar Todo</button>
         <input
