@@ -6,7 +6,7 @@ import { MotosList } from './MotosList';
 function App() {
   const [motos, setMotos] = useState([]);
   const [showColors, setShowColors] = useState(false);
-  const [sortByType, setSortByType] = useState(false);
+  const [sortBy, setSortBy] = useState('none');
   const [filterType, setFilterType] = useState(null);
 
   const originalMotos = useRef([]);
@@ -39,13 +39,31 @@ function App() {
         })
       : motos;
 
-  const sortedMotos = sortByType
-    ? [...filteredMotos].sort((a, b) => a.type.localeCompare(b.type))
-    : filteredMotos;
+  //sort by model and type
+  let sortedMotos = filteredMotos;
+  if (sortBy === 'type') {
+    sortedMotos = [...filteredMotos].sort((a, b) =>
+      a.type.localeCompare(b.type)
+    );
+  } else if (sortBy === 'model') {
+    sortedMotos = [...filteredMotos].sort((a, b) =>
+      a.model.localeCompare(b.model)
+    );
+  } else if (sortBy === 'none') {
+    sortedMotos = filteredMotos;
+  } else if (sortBy === 'topspeed') {
+    sortedMotos = [...filteredMotos].sort((a, b) => {
+      const speedA = parseFloat(a.top_speed);
+      const speedB = parseFloat(b.top_speed);
 
-  //Reset Everything function
+      return speedA - speedB;
+    });
+  }
+
+  //Reset Everything function without changing formatting
   const handleReset = () => {
     setMotos(originalMotos.current);
+    setSortBy('none');
   };
 
   //Delete Everything function
@@ -61,18 +79,16 @@ function App() {
     setShowColors(!showColors);
   };
 
-  //Sorting table function
-  const toggleSortByType = () => {
-    setSortByType(!sortByType);
-  };
-
   return (
     <div>
       <h1>Top BMW Motos</h1>
       <header>
         <button onClick={toggleColors}>Colorear Filas</button>
-        <button onClick={toggleSortByType}>
-          {sortByType ? 'No Ordenar por Tipo' : 'Ordenar por Tipo'}
+        <button
+          onClick={() => {
+            setSortBy('type');
+          }}>
+          Ordenar por Tipo
         </button>
         <button onClick={handleReset}>Restaurar Todo</button>
         <input
@@ -87,6 +103,7 @@ function App() {
           motos={sortedMotos}
           showColors={showColors}
           handleDelete={handleDelete}
+          setSortBy={setSortBy}
         />
       </main>
     </div>

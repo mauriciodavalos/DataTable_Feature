@@ -1,16 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export function MotosList({ motos, showColors, handleDelete }) {
+export function MotosList({ motos, showColors, handleDelete, setSortBy }) {
   return (
     <table
       style={{ width: '100%', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
       <thead style={{ backgroundColor: 'white', color: 'black' }}>
         <tr>
-          <th>Modelo</th>
+          <th
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setSortBy('model');
+            }}>
+            Modelo
+          </th>
           <th>Año</th>
-          <th>Tipo</th>
-          <th>Velocidad Maxima</th>
+          <th
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setSortBy('type');
+            }}>
+            Tipo
+          </th>
+          <th
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setSortBy('topspeed');
+            }}>
+            Velocidad Maxima
+          </th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -48,6 +66,6 @@ MotosList.propTypes = {
     })
   ),
   showColors: PropTypes.bool,
-  sortByCountry: PropTypes.bool,
+  setSortBy: PropTypes.func.isRequired,
   handleDelete: PropTypes.func,
 };
