@@ -68,7 +68,7 @@ function App() {
 
   return (
     <div>
-      <h1>BMW Top list</h1>
+      <h1>Top BMW Motos</h1>
       <header>
         <button onClick={toggleColors}>Colorear Filas</button>
         <button onClick={toggleSortByType}>
