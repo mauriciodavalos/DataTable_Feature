@@ -5,7 +5,7 @@ import { MotosList } from './MotosList';
 
 function App() {
   const [motos, setMotos] = useState([]);
-  const [showColors, setShowColors] = useState(true);
+  const [showColors, setShowColors] = useState(false);
   const [sortByType, setSortByType] = useState(false);
   const [filterType, setFilterType] = useState(null);
 
